@@ -48,7 +48,7 @@ const config = {
                                     'react',
                                     ['env', {
                                         "targets": {
-                                            "node": ["last 2 versions"]
+                                            "node": "6"
                                         }
                                     }]
                                 ],
@@ -69,7 +69,7 @@ const config = {
                             'react',
                             ['env', {
                                 "targets": {
-                                    "node": ["last 2 versions"]
+                                    "node": "6"
                                 }
                             }]
                         ],

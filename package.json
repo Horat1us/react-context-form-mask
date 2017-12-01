@@ -2,19 +2,17 @@
   "name": "react-context-form-mask",
   "version": "1.0.0",
   "description": "",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
   "scripts": {
-    "test": "cross-env nyc mocha -r jsdom-global/register -r ts-node/register -r source-map-support/register tests/unit/**.ts tests/unit/**.tsx",
-    "e2e": "tsc --project tsconfig.codecept.json && codeceptjs run --steps",
-    "build": "cross-env NODE_ENV=production webpack",
-    "dev": "webpack-dev-server",
-    "preview": "./node_modules/.bin/webpack",
-    "selenium": "selenium-standalone install && selenium-standalone start",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "test": "cross-env TS_NODE_PROJECT=tsconfig.json ./node_modules/.bin/nyc mocha -r jsdom-global/register -r ts-node/register -r source-map-support/register tests/unit/bootstrap.ts tests/**/*-specs.tsx",
+    "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack",
+    "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "lint": "tslint --project . --fix --exclude ./node_modules/* --exclude ./web/*"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/Horat1us/react-context-form-mask"
   },
   "keywords": [
     "website",
@@ -24,7 +22,7 @@
   "author": "Alexander Letnikow",
   "license": "MIT",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/Horat1us/react-context-form-mask/issues"
   },
   "homepage": "",
   "devDependencies": {
@@ -35,7 +33,7 @@
     "@types/sinon": "^2.3.3",
     "chai": "^4.1.1",
     "codecov": "^2.3.0",
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.0.0",
     "jsdom": "11.1.0",
     "jsdom-global": "3.0.2",
@@ -56,20 +54,22 @@
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-regenerator-runtime": "^6.5.0",
     "circular-dependency-plugin": "^4.2.1",
     "clean-webpack-plugin": "^0.1.16",
     "cross-env": "^5.0.5",
-    "prop-types": "^15.5.10",
-    "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-context-form": "^1.7.0",
     "source-map-loader": "^0.2.1",
     "typescript": "^2.4.2",
     "webpack": "^3.6.0",
     "webpack-node-externals": "^1.6.0",
     "webpack-plugin-critical": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react-context-form": "^1.8.0",
+    "react-input-mask": "^1.0.7"
   },
   "nyc": {
     "extension": [
