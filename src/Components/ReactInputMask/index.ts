@@ -1,16 +1,19 @@
 import * as React from "react";
 
-export interface MaskProps extends React.HTMLProps<HTMLInputElement> {
-    onPaste: (event: React.ClipboardEvent<HTMLInputElement> | ClipboardEvent) => Promise<void>;
-    onInput: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-    onFocus: () => Promise<void>;
-    onChange: () => undefined;
+export interface MaskProps {
+    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => Promise<void> | void;
+    onPaste?: (event: React.ClipboardEvent<HTMLInputElement> | ClipboardEvent) => Promise<void> | void;
+    onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => Promise<void> | void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void> | void;
+    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void> | void;
+    ref?: (element: HTMLInputElement | Mask) => void;
+    onFocus?: () => Promise<void> | void;
+    onBlur?: () => Promise<void> | void;
 
-    ref: (element: HTMLInputElement | Mask) => any;
-    alwaysShowMask: boolean;
-    maskChar: string;
-    mask: string;
-    value: any;
+    alwaysShowMask?: boolean;
+    maskChar?: string;
+    mask?: string;
+    value?: any;
 }
 
 interface Mask extends React.Component<React.HTMLProps<HTMLInputElement>, undefined> {

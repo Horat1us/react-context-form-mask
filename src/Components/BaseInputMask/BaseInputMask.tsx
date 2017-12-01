@@ -1,7 +1,7 @@
 import * as React from "react";
-import {BaseInput, BaseInputDefaultProps} from "react-context-form";
+import {BaseInput, BaseInputDefaultProps, BaseInputProps, BaseInputPropTypes} from "react-context-form";
 
-import {ReactInputMask} from "../ReactInputMask";
+import {MaskProps, ReactInputMask} from "../ReactInputMask";
 import {BaseInputMaskDefaultProps, BaseInputMaskProps, BaseInputMaskPropTypes} from "./BaseInputMaskProps";
 
 interface BaseInputMaskInterface {
@@ -9,21 +9,24 @@ interface BaseInputMaskInterface {
     currentCursorPosition: number;
     currentMask: string;
     maskList: string [];
-    baseProps: () => any;
+    readonly baseProps: {[P in keyof MaskProps]?: MaskProps[P]};
     getCurrentMask: (valueLength: number) => string;
     setElement: (element: typeof ReactInputMask) => void;
 }
 
 export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseInputMaskInterface {
-    public static readonly propTypes = BaseInputMaskPropTypes;
-    public static readonly defaultProps: any = {
-        ...BaseInputMaskDefaultProps,
-        ...BaseInputDefaultProps
+    public static readonly propTypes = {
+        ...BaseInputPropTypes,
+        ...BaseInputMaskPropTypes
+    };
+    public static readonly defaultProps: typeof BaseInputMaskDefaultProps & typeof BaseInputDefaultProps = {
+        ...BaseInputDefaultProps,
+        ...BaseInputMaskDefaultProps
     };
 
+    public props: BaseInputMaskProps & BaseInputProps<HTMLInputElement>;
     public maskElement: typeof ReactInputMask;
     public currentCursorPosition: number;
-    public props: BaseInputMaskProps;
     public maskList: string [];
     public currentMask: string;
 
@@ -34,11 +37,10 @@ export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseIn
             .sort((prev, curr) => prev.replace(/\D/g, "").length - curr.replace(/\D/g, "").length);
     }
 
-    public get baseProps(): any {
+    public get baseProps(): {[P in keyof MaskProps]?: MaskProps[P]} {
         return {
             ref: this.setElement,
             onPaste: this.handlePaste,
-            type: this.props.type || "tel",
             mask: this.getCurrentMask(this.childProps.value.toString().length)
         }
     }

@@ -3,29 +3,40 @@ import * as React from "react";
 import {toFixed} from "../../helpers/toFixed";
 
 import {TimeInputDefaultProps, TimeInputProps, TimeInputPropTypes} from "./TimeInputProps";
+import {BaseInputMaskProps} from "../BaseInputMask/BaseInputMaskProps";
 import {BaseInputMask} from "../BaseInputMask/BaseInputMask";
-import {ReactInputMask} from "../ReactInputMask";
+import {MaskProps, ReactInputMask} from "../ReactInputMask";
 
 export class TimeInput extends BaseInputMask {
-    public static readonly defaultProps = TimeInputDefaultProps;
-    public static readonly propTypes = TimeInputPropTypes;
+    public static readonly defaultProps = {
+        ...BaseInputMask.defaultProps,
+        ...TimeInputDefaultProps
+    };
+    public static readonly propTypes = {
+        ...BaseInputMask.propTypes,
+        ...TimeInputPropTypes
+    };
 
-    public props: TimeInputProps;
+    public props: TimeInputProps & BaseInputMaskProps;
 
     public render(): JSX.Element [] {
-        const {maskList, onCursorEnd, timeFormat, showControls, ...nativeProps} = this.childProps as TimeInputProps;
+        const {
+            maskList,
+            onCursorEnd,
+            timeFormat,
+            showControls,
+            ...nativeProps
+        } = this.childProps as TimeInputProps & BaseInputMaskProps;
 
-        const inputProps = {
+        const inputProps: {[P in keyof MaskProps]?: MaskProps[P]} = {
             ...nativeProps,
             ...this.baseProps,
-            ...{
-                onChange: this.handleChangeControl,
-                onKeyDown: this.handleKeyDown,
-                onKeyUp: this.handleKeyUp,
-                onInput: this.handleInput,
-                onFocus: this.handleFocus,
-                onBlur: () => undefined,
-            }
+            onChange: this.handleChangeControl,
+            onKeyDown: this.handleKeyDown,
+            onKeyUp: this.handleKeyUp,
+            onInput: this.handleInput,
+            onFocus: this.handleFocus,
+            onBlur: () => undefined
         };
 
         // tslint:disable:jsx-wrap-multiline
@@ -91,7 +102,7 @@ export class TimeInput extends BaseInputMask {
         }
     };
 
-    protected handleIncrement = async () => {
+    protected handleIncrement = async (): Promise<void> => {
         if (!this.maskElement) {
             return;
         }
@@ -99,7 +110,7 @@ export class TimeInput extends BaseInputMask {
         await this.handleChangeControl(this.changeHours(1));
     };
 
-    protected handleDecrement = async () => {
+    protected handleDecrement = async (): Promise<void> => {
         if (!this.maskElement) {
             return;
         }
