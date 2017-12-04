@@ -7,8 +7,8 @@ export interface MaskProps {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     ref?: (element: HTMLInputElement | Mask) => void;
-    onFocus?: () => void;
-    onBlur?: () => void;
+    onFocus?: (event: any) => void;
+    onBlur?: (event: any) => void;
 
     alwaysShowMask?: boolean;
     maskChar?: string;

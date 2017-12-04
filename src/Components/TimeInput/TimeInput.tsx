@@ -110,7 +110,7 @@ export class TimeInput extends BaseInputMask {
         this.handleChangeControl(this.changeHours(1));
     };
 
-    protected handleDecrement = async (): void => {
+    protected handleDecrement = (): void => {
         if (!this.maskElement) {
             return;
         }
