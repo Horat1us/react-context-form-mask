@@ -1,11 +1,11 @@
 import * as React from "react";
 import {expect} from "chai";
 import {ReactWrapper, mount} from "enzyme";
-import {PhoneInput} from "../../src/Components/PhoneInput/PhoneInput";
+import {MaskInput} from "../../src/Components/MaskInput/MaskInput";
 
-describe("<PhoneInput/>", () => {
+describe("<MaskInput/>", () => {
     let wrapper: ReactWrapper<any, undefined>;
-    let node: PhoneInput;
+    let node: MaskInput;
 
     const commonHandler = () => undefined;
 
@@ -33,7 +33,7 @@ describe("<PhoneInput/>", () => {
             value: defaultValue
         };
 
-        wrapper = mount(<PhoneInput maskList={maskList}/>, {context});
+        wrapper = mount(<MaskInput maskList={maskList}/>, {context});
 
         node = wrapper.instance() as any;
     });
