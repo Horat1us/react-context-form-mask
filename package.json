@@ -1,6 +1,6 @@
 {
   "name": "react-context-form-mask",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
