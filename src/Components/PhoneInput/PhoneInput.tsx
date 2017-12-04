@@ -6,14 +6,14 @@ import {BaseInputMaskProps} from "../BaseInputMask/BaseInputMaskProps";
 
 export class PhoneInput extends BaseInputMask {
 
-    public async componentDidUpdate() {
+    public componentDidUpdate() {
         if (document.activeElement !== this.maskElement.input) {
             return;
         }
 
         this.maskElement.setCursorPos(this.maskElement.input.selectionStart);
         if (this.maskElement.value !== this.childProps.value) {
-            await this.handleChange({
+            this.handleChange({
                 currentTarget: {
                     value: this.childProps.value
                 }

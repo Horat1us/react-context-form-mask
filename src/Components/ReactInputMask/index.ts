@@ -1,14 +1,14 @@
 import * as React from "react";
 
 export interface MaskProps {
-    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => Promise<void> | void;
-    onPaste?: (event: React.ClipboardEvent<HTMLInputElement> | ClipboardEvent) => Promise<void> | void;
-    onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => Promise<void> | void;
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void> | void;
-    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void> | void;
+    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => void;
+    onPaste?: (event: React.ClipboardEvent<HTMLInputElement> | ClipboardEvent) => void;
+    onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     ref?: (element: HTMLInputElement | Mask) => void;
-    onFocus?: () => Promise<void> | void;
-    onBlur?: () => Promise<void> | void;
+    onFocus?: () => void;
+    onBlur?: () => void;
 
     alwaysShowMask?: boolean;
     maskChar?: string;

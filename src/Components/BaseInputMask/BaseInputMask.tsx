@@ -62,7 +62,7 @@ export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseIn
             .reduce((prev: string, curr: string) => prev.replace(/\D/g, "").length > valueLength ? prev : curr);
     }
 
-    protected handlePaste = async (event: ClipboardEvent): Promise<void> => {
+    protected handlePaste = (event: ClipboardEvent): void => {
         event.preventDefault();
 
         const value = event.clipboardData.getData("Text");
@@ -70,7 +70,7 @@ export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseIn
             return;
         }
 
-        await this.handleChange({
+        this.handleChange({
             currentTarget: {value}
         } as React.ChangeEvent<HTMLInputElement>);
     }

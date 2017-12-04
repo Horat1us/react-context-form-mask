@@ -55,7 +55,7 @@ export class TimeInput extends BaseInputMask {
         );
     }
 
-    protected handleFocus = async (): Promise<void> => {
+    protected handleFocus = (): void => {
         this.maskElement.setCursorPos(0);
 
         return this.context.onFocus();
@@ -65,7 +65,7 @@ export class TimeInput extends BaseInputMask {
         this.currentCursorPosition = event.target.selectionStart
     };
 
-    protected handleChangeControl = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    protected handleChangeControl = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const value = event.currentTarget.value.replace(/-/g, "0").split(":");
 
         let hoursValue: string | number = Number(value[0]);
@@ -86,13 +86,13 @@ export class TimeInput extends BaseInputMask {
         return this.context.onChange(`${hoursValue}:${minutesValue}`);
     };
 
-    protected handleKeyDown = async (event: KeyboardEvent): Promise<void> => {
+    protected handleKeyDown = (event: KeyboardEvent): void => {
         if (event.key === "ArrowDown") {
             this.maskElement.setCursorPos(this.currentCursorPosition || 0);
-            await this.handleDecrement();
+            this.handleDecrement();
         } else if (event.key === "ArrowUp") {
             this.maskElement.setCursorPos(this.currentCursorPosition || 0);
-            await this.handleIncrement();
+            this.handleIncrement();
         }
     };
 
@@ -102,20 +102,20 @@ export class TimeInput extends BaseInputMask {
         }
     };
 
-    protected handleIncrement = async (): Promise<void> => {
+    protected handleIncrement = (): void => {
         if (!this.maskElement) {
             return;
         }
 
-        await this.handleChangeControl(this.changeHours(1));
+        this.handleChangeControl(this.changeHours(1));
     };
 
-    protected handleDecrement = async (): Promise<void> => {
+    protected handleDecrement = async (): void => {
         if (!this.maskElement) {
             return;
         }
 
-        await this.handleChangeControl(this.changeHours(-1));
+        this.handleChangeControl(this.changeHours(-1));
     };
 
     protected changeHours(value: number): React.ChangeEvent<HTMLInputElement> {
