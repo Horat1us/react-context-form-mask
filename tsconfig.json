@@ -7,7 +7,9 @@
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "declaration": true,
+    "declarationDir": "build"
   },
   "exclude": [
     "./node_modules/**/*",
