@@ -16,7 +16,7 @@ export interface MaskProps {
     value?: any;
 }
 
-interface Mask extends React.Component<React.HTMLProps<HTMLInputElement>, undefined> {
+export interface Mask extends React.Component<React.HTMLProps<HTMLInputElement>, undefined> {
     (props: MaskProps): JSX.Element;
 
     setInputValue: (newValue: string) => void;

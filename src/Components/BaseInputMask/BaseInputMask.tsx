@@ -1,10 +1,12 @@
 import * as React from "react";
+import * as PropTypes from "prop-types";
+
 import {BaseInput, BaseInputDefaultProps, BaseInputProps, BaseInputPropTypes} from "react-context-form";
 
-import {MaskProps, ReactInputMask} from "../ReactInputMask";
+import {MaskProps, ReactInputMask, Mask} from "../ReactInputMask";
 import {BaseInputMaskDefaultProps, BaseInputMaskProps, BaseInputMaskPropTypes} from "./BaseInputMaskProps";
 
-interface BaseInputMaskInterface {
+export interface BaseInputMaskInterface {
     maskElement: typeof ReactInputMask;
     currentCursorPosition: number;
     currentMask: string;
