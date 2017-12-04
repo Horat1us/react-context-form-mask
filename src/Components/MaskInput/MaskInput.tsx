@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as PropTypes from "prop-types";
 
 import {MaskProps, ReactInputMask} from "../ReactInputMask";
 import {BaseInputMask} from "../BaseInputMask/BaseInputMask";
