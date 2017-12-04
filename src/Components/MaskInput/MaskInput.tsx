@@ -4,7 +4,7 @@ import {MaskProps, ReactInputMask} from "../ReactInputMask";
 import {BaseInputMask} from "../BaseInputMask/BaseInputMask";
 import {BaseInputMaskProps} from "../BaseInputMask/BaseInputMaskProps";
 
-export class PhoneInput extends BaseInputMask {
+export class MaskInput extends BaseInputMask {
 
     public componentDidUpdate() {
         if (document.activeElement !== this.maskElement.input) {
