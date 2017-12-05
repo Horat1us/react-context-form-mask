@@ -9,8 +9,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "declaration": true,
-    "declarationDir": "build",
-    "typeRoots" : ["./src/@types", "./node_modules/@types"]
+    "declarationDir": "build"
   },
   "exclude": [
     "./node_modules/**/*",

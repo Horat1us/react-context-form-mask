@@ -3,20 +3,19 @@ import * as PropTypes from "prop-types";
 
 import {BaseInput, BaseInputDefaultProps, BaseInputProps, BaseInputPropTypes} from "react-context-form";
 
-import * as ReactInputMask from "react-input-mask"
-
+import {ReactInputMask} from "react-input-mask"
 
 import {BaseInputMaskDefaultProps, BaseInputMaskProps, BaseInputMaskPropTypes} from "./BaseInputMaskProps";
 
 export interface BaseInputMaskInterface {
-    maskElement: typeof ReactInputMask;
+    maskElement: any;
     currentCursorPosition: number;
     currentMask: string;
     maskList: string [];
     // {[P in keyof ReactInputMaskProps]?: ReactInputMaskProps[P]};
     readonly baseProps:any;
     getCurrentMask: (valueLength: number) => string;
-    setElement: (element: typeof ReactInputMask) => void;
+    setElement: (element: any) => void;
 }
 
 export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseInputMaskInterface {
@@ -30,7 +29,7 @@ export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseIn
     };
 
     public props: BaseInputMaskProps & BaseInputProps<HTMLInputElement>;
-    public maskElement: typeof ReactInputMask;
+    public maskElement: ReactInputMask;
     public currentCursorPosition: number;
     public maskList: string [];
     public currentMask: string;
@@ -50,8 +49,8 @@ export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseIn
         }
     }
 
-    public setElement = (element: typeof ReactInputMask): void => {
-        if (!(element instanceof ReactInputMask)) {
+    public setElement = (element: any): void => {
+        if (!element || !element.hasOwnProperty("input")) {
             this.maskElement = undefined;
             return;
         }

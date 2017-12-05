@@ -2,7 +2,6 @@ import * as PropTypes from "prop-types";
 
 import {ReactInputMaskProps} from "react-input-mask"
 
-
 export interface TimeInputProps {
     showControls?: boolean;
     timeFormat?: {

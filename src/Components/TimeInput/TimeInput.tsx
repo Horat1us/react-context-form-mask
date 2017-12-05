@@ -1,5 +1,7 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import {ReactInputMask} from "react-input-mask"
+
 import {InputContext, TransformTypes} from "react-context-form";
 
 import {toFixed} from "../../helpers/toFixed";
@@ -7,7 +9,6 @@ import {toFixed} from "../../helpers/toFixed";
 import {TimeInputDefaultProps, TimeInputProps, TimeInputPropTypes} from "./TimeInputProps";
 import {BaseInputMaskProps} from "../BaseInputMask/BaseInputMaskProps";
 import {BaseInputMask} from "../BaseInputMask/BaseInputMask";
-import * as ReactInputMask from "react-input-mask"
 
 
 export class TimeInput extends BaseInputMask {
@@ -22,7 +23,7 @@ export class TimeInput extends BaseInputMask {
 
     public props: TimeInputProps & BaseInputMaskProps;
 
-    public render(): JSX.Element [] {
+    public render(): any {
         const {
             maskList,
             onCursorEnd,
@@ -40,16 +41,15 @@ export class TimeInput extends BaseInputMask {
             onInput: this.handleInput,
             onFocus: this.handleFocus,
             onBlur: () => undefined
-        };
-
+        } as any;
         // tslint:disable:jsx-wrap-multiline
         return [
-            <ReactInputMask {...inputProps} key="input"/>,
+            <ReactInputMask/> as any,
             this.props.showControls && this.Controls
         ];
     }
 
-    protected get Controls(): JSX.Element {
+    protected get Controls(): any {
         return (
             <div className="spinner__controls" key="controls">
                 <button type="button" tabIndex={-1} className="btn btn_inc" onClick={this.handleIncrement}/>
