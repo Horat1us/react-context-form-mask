@@ -3,7 +3,9 @@ import * as PropTypes from "prop-types";
 
 import {BaseInput, BaseInputDefaultProps, BaseInputProps, BaseInputPropTypes} from "react-context-form";
 
-import {MaskProps, ReactInputMask, Mask} from "../ReactInputMask";
+import * as ReactInputMask from "react-input-mask"
+
+
 import {BaseInputMaskDefaultProps, BaseInputMaskProps, BaseInputMaskPropTypes} from "./BaseInputMaskProps";
 
 export interface BaseInputMaskInterface {
@@ -11,7 +13,8 @@ export interface BaseInputMaskInterface {
     currentCursorPosition: number;
     currentMask: string;
     maskList: string [];
-    readonly baseProps: {[P in keyof MaskProps]?: MaskProps[P]};
+    // {[P in keyof ReactInputMaskProps]?: ReactInputMaskProps[P]};
+    readonly baseProps:any;
     getCurrentMask: (valueLength: number) => string;
     setElement: (element: typeof ReactInputMask) => void;
 }
@@ -39,7 +42,7 @@ export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseIn
             .sort((prev, curr) => prev.replace(/\D/g, "").length - curr.replace(/\D/g, "").length);
     }
 
-    public get baseProps(): {[P in keyof MaskProps]?: MaskProps[P]} {
+    public get baseProps(): any {
         return {
             ref: this.setElement,
             onPaste: this.handlePaste,

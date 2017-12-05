@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 
-import {MaskProps, ReactInputMask} from "../ReactInputMask";
+import * as ReactInputMask from "react-input-mask"
+
 import {BaseInputMask} from "../BaseInputMask/BaseInputMask";
 import {BaseInputMaskProps} from "../BaseInputMask/BaseInputMaskProps";
 
@@ -27,7 +28,7 @@ export class MaskInput extends BaseInputMask {
     public render(): any {
         const {maskList, onCursorEnd, ...nativeProps} = this.childProps as BaseInputMaskProps;
 
-        const inputProps: MaskProps = {
+        const inputProps: any = {
             ...nativeProps,
             ...this.baseProps,
             ...{
@@ -37,6 +38,7 @@ export class MaskInput extends BaseInputMask {
             }
         };
 
+        
         return <ReactInputMask {...inputProps}/>
     }
 }

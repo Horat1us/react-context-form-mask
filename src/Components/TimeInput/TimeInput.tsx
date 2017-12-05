@@ -7,7 +7,8 @@ import {toFixed} from "../../helpers/toFixed";
 import {TimeInputDefaultProps, TimeInputProps, TimeInputPropTypes} from "./TimeInputProps";
 import {BaseInputMaskProps} from "../BaseInputMask/BaseInputMaskProps";
 import {BaseInputMask} from "../BaseInputMask/BaseInputMask";
-import {MaskProps, ReactInputMask} from "../ReactInputMask";
+import * as ReactInputMask from "react-input-mask"
+
 
 export class TimeInput extends BaseInputMask {
     public static readonly defaultProps = {
@@ -29,8 +30,8 @@ export class TimeInput extends BaseInputMask {
             showControls,
             ...nativeProps
         } = this.childProps as TimeInputProps & BaseInputMaskProps;
-
-        const inputProps: {[P in keyof MaskProps]?: MaskProps[P]} = {
+        //{[P in keyof ReactInputMaskProps]?: ReactInputMaskProps[P]}
+        const inputProps:any  = {
             ...nativeProps,
             ...this.baseProps,
             onChange: this.handleChangeControl,

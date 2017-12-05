@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "@types/node": "^8.0.47",
+    "@types/react-input-mask": "^0.7.7",
     "awesome-typescript-loader": "^3.2.2",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",

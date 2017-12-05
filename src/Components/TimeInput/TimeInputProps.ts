@@ -1,6 +1,7 @@
 import * as PropTypes from "prop-types";
 
-import {MaskProps} from "../ReactInputMask/index";
+import {ReactInputMaskProps} from "react-input-mask"
+
 
 export interface TimeInputProps {
     showControls?: boolean;
@@ -18,7 +19,7 @@ export const TimeInputPropTypes: {[P in keyof TimeInputProps]: PropTypes.Validat
     })
 };
 
-export const TimeInputDefaultProps: {[P in keyof TimeInputProps & MaskProps]?: (TimeInputProps & MaskProps)[P]} = {
+export const TimeInputDefaultProps: {[P in keyof TimeInputProps & ReactInputMaskProps]?: (TimeInputProps & ReactInputMaskProps)[P]} = {
     mask: "99:99",
     maskChar: "-",
     alwaysShowMask: true,
