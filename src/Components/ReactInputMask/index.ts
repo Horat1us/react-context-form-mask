@@ -1,23 +1,14 @@
 import * as React from "react";
 
-export interface MaskProps {
-    onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => void;
-    onPaste?: (event: React.ClipboardEvent<HTMLInputElement> | ClipboardEvent) => void;
-    onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent) => void;
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    ref?: (element: HTMLInputElement | Mask) => void;
-    onFocus?: (event: any) => void;
-    onBlur?: (event: any) => void;
-
+export interface ReactInputMaskProps extends React.HTMLProps<HTMLInputElement> {
     alwaysShowMask?: boolean;
+    formatChars?: string;
     maskChar?: string;
-    mask?: string;
-    value?: any;
+    mask: string;
 }
 
-export interface Mask extends React.Component<React.HTMLProps<HTMLInputElement>, undefined> {
-    (props: MaskProps): JSX.Element;
+export interface ReactInputMaskInterface extends React.Component<ReactInputMaskProps> {
+    (props: ReactInputMaskProps): JSX.Element;
 
     setInputValue: (newValue: string) => void;
     setCursorPos: (pos: number) => void;
@@ -26,4 +17,9 @@ export interface Mask extends React.Component<React.HTMLProps<HTMLInputElement>,
     value: string;
 }
 
-export const ReactInputMask: Mask = require("react-input-mask/lib");
+let ReactInputMaskLib = require("react-input-mask");
+
+export const ReactInputMask: ReactInputMaskInterface =
+    "default" in ReactInputMaskLib
+        ? ReactInputMaskLib["default"]
+        : ReactInputMaskLib;

@@ -1,21 +1,23 @@
 import * as PropTypes from "prop-types";
-import {InputContext} from "react-context-form";
+import { BaseInputProps, BaseInputPropTypes} from "react-context-form";
+import { ReactInputMaskInterface } from "../ReactInputMask/index";
 
-export interface BaseInputMaskProps {
-    maskList: string [];
-    maskChar?: string;
-    alwaysShowMask?: boolean;
-    onCursorEnd?: (element: HTMLInputElement, context: InputContext) => void
+export interface BaseInputMaskProps extends BaseInputProps<HTMLInputElement> {
+    mask: string [] | string,
+    maskChar?: string,
+    formatChars?: string,
+    alwaysShowMask?: boolean,
+    maskRef?: (element: ReactInputMaskInterface) => void;
 }
 
 export const BaseInputMaskPropTypes: {[P in keyof BaseInputMaskProps]: PropTypes.Validator<any>} = {
-    maskList: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    mask: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+        PropTypes.string.isRequired
+    ]),
     maskChar: PropTypes.string,
+    formatChars: PropTypes.string,
     alwaysShowMask: PropTypes.bool,
-    onCursorEnd: PropTypes.func
-};
-
-export const BaseInputMaskDefaultProps: {[P in keyof BaseInputMaskProps]?: BaseInputMaskProps[P]} = {
-    maskChar: "",
-    alwaysShowMask: false
-};
+    maskRef: PropTypes.func,
+    ...BaseInputPropTypes
+}

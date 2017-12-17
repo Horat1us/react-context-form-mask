@@ -1,70 +1,38 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
+import { BaseInput } from "react-context-form";
 
-import {BaseInput, BaseInputDefaultProps, BaseInputProps, BaseInputPropTypes} from "react-context-form";
+import { ReactInputMaskInterface, ReactInputMaskProps, ReactInputMask } from "../ReactInputMask";
+import { BaseInputMaskProps, BaseInputMaskPropTypes } from "./BaseInputMaskProps";
 
-import {MaskProps, ReactInputMask, Mask} from "../ReactInputMask";
-import {BaseInputMaskDefaultProps, BaseInputMaskProps, BaseInputMaskPropTypes} from "./BaseInputMaskProps";
+export class BaseInputMask extends BaseInput<HTMLInputElement> {
+    public static readonly propTypes = BaseInputMaskPropTypes;
 
-export interface BaseInputMaskInterface {
-    maskElement: typeof ReactInputMask;
-    currentCursorPosition: number;
-    currentMask: string;
-    maskList: string [];
-    readonly baseProps: {[P in keyof MaskProps]?: MaskProps[P]};
-    getCurrentMask: (valueLength: number) => string;
-    setElement: (element: typeof ReactInputMask) => void;
-}
+    public readonly props: BaseInputMaskProps;
 
-export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseInputMaskInterface {
-    public static readonly propTypes = {
-        ...BaseInputPropTypes,
-        ...BaseInputMaskPropTypes
-    };
-    public static readonly defaultProps: typeof BaseInputMaskDefaultProps & typeof BaseInputDefaultProps = {
-        ...BaseInputDefaultProps,
-        ...BaseInputMaskDefaultProps
-    };
-
-    public props: BaseInputMaskProps & BaseInputProps<HTMLInputElement>;
-    public maskElement: typeof ReactInputMask;
-    public currentCursorPosition: number;
-    public maskList: string [];
-    public currentMask: string;
-
-    public constructor(props) {
+    public constructor(props: BaseInputMaskProps) {
         super(props);
 
-        this.maskList = this.props.maskList
-            .sort((prev, curr) => prev.replace(/\D/g, "").length - curr.replace(/\D/g, "").length);
+        if (props.mask instanceof Array) {
+            this.maskList = props.mask
+                .sort((prev, curr) => prev.replace(/\D/g, "").length - curr.replace(/\D/g, "").length);
+        }
     }
 
-    public get baseProps(): {[P in keyof MaskProps]?: MaskProps[P]} {
+    protected inputController: ReactInputMaskInterface;
+    protected DOMInput: HTMLInputElement;
+
+    protected get maskProps(): ReactInputMaskProps {
+        const { transform, maskRef, ...props } = this.childProps as BaseInputMaskProps;
         return {
+            ...props,
+            mask: this.getCurrentMask(this.childProps.value.toString().length),
             ref: this.setElement,
-            onPaste: this.handlePaste,
-            mask: this.getCurrentMask(this.childProps.value.toString().length)
+            onPaste: this.handlePaste
         }
     }
 
-    public setElement = (element: typeof ReactInputMask): void => {
-        if (!(element instanceof ReactInputMask)) {
-            this.maskElement = undefined;
-            return;
-        }
-
-        this.maskElement = element;
-        if (this.childProps.ref instanceof Function) {
-            this.childProps.ref(element.input);
-        }
-    };
-
-    public getCurrentMask(valueLength: number): string {
-        return this.maskList
-            .reduce((prev: string, curr: string) => prev.replace(/\D/g, "").length > valueLength ? prev : curr);
-    }
-
-    protected handlePaste = (event: ClipboardEvent): void => {
+    protected handlePaste = (event: React.ClipboardEvent<HTMLInputElement>): void => {
         event.preventDefault();
 
         const value = event.clipboardData.getData("Text");
@@ -73,7 +41,29 @@ export class BaseInputMask extends BaseInput<HTMLInputElement> implements BaseIn
         }
 
         this.handleChange({
-            currentTarget: {value}
+            currentTarget: { value }
         } as React.ChangeEvent<HTMLInputElement>);
     }
+
+    private maskList: string[] | undefined;
+
+    private getCurrentMask(valueLength: number): string {
+        return this.maskList
+            ? this.maskList.reduce((prev: string, curr: string) => prev.replace(/\D/g, "").length > valueLength ? prev : curr)
+            : this.props.mask as string;
+    }
+
+    private setElement = (element: HTMLInputElement | ReactInputMaskInterface): void => {
+        this.props.maskRef && this.props.maskRef(element as ReactInputMaskInterface);
+               
+        if (!(element instanceof ReactInputMask)) {
+            return;
+        }
+
+        this.inputController = element as ReactInputMaskInterface;
+        this.DOMInput = (element as ReactInputMaskInterface).input;
+        if (this.childProps.ref instanceof Function) {
+            this.childProps.ref(this.DOMInput);
+        }
+    };
 }
