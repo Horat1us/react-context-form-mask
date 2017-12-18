@@ -1,7 +1,5 @@
 import * as PropTypes from "prop-types";
 
-import { BaseInputMaskProps } from "../BaseInputMask";
-
 export interface TimeInputProps extends React.HTMLAttributes<HTMLInputElement> {
     showControls?: boolean;
     timeFormat?: {
@@ -20,7 +18,7 @@ export const TimeInputPropTypes: {[P in keyof TimeInputProps]: PropTypes.Validat
     onCursorEnd: PropTypes.func
 }
 
-export const TimeInputDefaultProps: {[P in keyof TimeInputProps & BaseInputMaskProps]?: TimeInputProps[P]} = {
+export const TimeInputDefaultProps: {[P in keyof TimeInputProps]: TimeInputProps[P]} = {
     showControls: true,
     timeFormat: {
         hours: 23,

@@ -30,7 +30,7 @@ export class TimeInput extends React.Component<TimeInputProps> {
             onInput: this.handleInput,
             onFocus: this.handleFocus,
             alwaysShowMask: true,
-            autoComplete:"off",            
+            autoComplete: "off",
             mask: "99:99",
             maskChar: "-",
             type: "tel"
@@ -60,7 +60,7 @@ export class TimeInput extends React.Component<TimeInputProps> {
 
     protected handleDecrement = () => this.handleChangeControl(this.changeHours(-1));
 
-    protected handleFocus = () => this.inputController.setCursorPos(0);    
+    protected handleFocus = () => this.inputController.setCursorPos(0);
 
     protected setInputConroller = (element: ReactInputMaskInterface): void => {
         this.inputController = element;
@@ -111,10 +111,10 @@ export class TimeInput extends React.Component<TimeInputProps> {
 
         minutesValue = minutesValue > minutes ? minutes : toFixed(2, minutesValue);
         hoursValue = hoursValue > hours ? hours : toFixed(2, hoursValue);
-        
+
         this.inputController.setInputValue(`${hoursValue}:${minutesValue}`);
         if (
-            this.props.onCursorEnd && 
+            this.props.onCursorEnd &&
             this.currentCursorPosition >= this.inputController.value.toString().length
         ) {
             this.props.onCursorEnd(this.inputController.input);
