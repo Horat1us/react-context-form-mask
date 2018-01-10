@@ -96,7 +96,7 @@ export class MaskInput extends BaseInput<MaskInputProps> {
             this.maskInputInstance = element;
 
             // pass dom element to context form
-            this.childProps.ref(this.maskInputInstance.input);
+            this.childProps.ref && this.childProps.ref(this.maskInputInstance.input);
         }
     };
 }

@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "declaration": true,
-    "declarationDir": "build"
+    "declarationDir": "build",
+    "experimentalDecorators": true
   },
   "exclude": [
     "./node_modules/**/*",

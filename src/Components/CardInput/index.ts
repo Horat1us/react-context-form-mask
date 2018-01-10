@@ -1,2 +1,2 @@
 export * from "./CardInput";
-export * from "./CardinputProps";
+export * from "./CardInputProps";

@@ -18,6 +18,7 @@ export interface ReactInputMaskInterface extends HTMLInputElement {
 };
 
 let ReactInputMaskLib = require("react-input-mask");
+
 if ("default" in ReactInputMaskLib) {
     ReactInputMaskLib = ReactInputMaskLib["default"];
 }

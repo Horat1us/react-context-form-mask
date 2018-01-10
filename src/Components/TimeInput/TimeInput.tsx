@@ -54,11 +54,29 @@ export class TimeInput extends React.Component<TimeInputProps> {
         );
     }
 
-    protected handleIncrement = () => this.handleChangeControl(this.changeHours(1));
+    protected handleIncrement = (): void => {
+        if (!this.maskInputInstance) {
+            return;
+        }
 
-    protected handleDecrement = () => this.handleChangeControl(this.changeHours(-1));
+        this.handleChangeControl(this.changeHours(1));
+    };
 
-    protected handleFocus = () => this.maskInputInstance.setCursorPos(0);
+    protected handleDecrement = (): void => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
+        this.handleChangeControl(this.changeHours(-1));
+    };
+
+    protected handleFocus = (): void => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
+        this.maskInputInstance.setCursorPos(0);
+    }
 
     protected setInputConroller = (element: ReactInputMaskInterface): void => {
         this.maskInputInstance = element;
@@ -69,6 +87,10 @@ export class TimeInput extends React.Component<TimeInputProps> {
     };
 
     protected handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
         switch (event.key) {
             case "ArrowDown":
                 this.maskInputInstance.setCursorPos(this.currentCursorPosition || 0);
@@ -80,12 +102,20 @@ export class TimeInput extends React.Component<TimeInputProps> {
     };
 
     protected handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
         if (event.key === "Tab") {
             this.maskInputInstance.setCursorPos(this.currentCursorPosition || 0);
         }
     };
 
     protected changeHours(value: number): React.ChangeEvent<HTMLInputElement> {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
         const valuesArray = this.maskInputInstance.value.toString().split(":");
         let hours = toFixed(2, (Number(valuesArray[0]) + value));
 
@@ -98,9 +128,13 @@ export class TimeInput extends React.Component<TimeInputProps> {
                 value: `${hours}:${valuesArray[1]}`
             }
         } as React.ChangeEvent<HTMLInputElement>;
-    }
+    };
 
     protected handleChangeControl = (event: React.ChangeEvent<HTMLInputElement>): any => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+        
         const value = event.currentTarget.value.replace(/-/g, "0").split(":");
 
         let hoursValue: string | number = Number(value[0]);
@@ -119,6 +153,5 @@ export class TimeInput extends React.Component<TimeInputProps> {
         ) {
             this.props.onCursorEnd(this.maskInputInstance.input);
         }
-
     };
 }
