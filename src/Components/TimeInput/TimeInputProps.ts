@@ -1,6 +1,6 @@
 import * as PropTypes from "prop-types";
 
-export interface TimeInputProps extends React.HTMLAttributes<HTMLInputElement> {
+export interface TimeInputProps extends React.HTMLProps<HTMLInputElement> {
     showControls?: boolean;
     timeFormat?: {
         hours: number,

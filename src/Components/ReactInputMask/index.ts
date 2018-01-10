@@ -2,24 +2,25 @@ import * as React from "react";
 
 export interface ReactInputMaskProps extends React.HTMLProps<HTMLInputElement> {
     alwaysShowMask?: boolean;
-    formatChars?: string;
+    formatChars?: {
+        [propName: string]: string;
+    },
     maskChar?: string;
     mask: string;
+    ref?: (element: ReactInputMaskInterface) => void
 }
 
-export interface ReactInputMaskInterface extends React.Component<ReactInputMaskProps> {
-    (props: ReactInputMaskProps): JSX.Element;
-
+export interface ReactInputMaskInterface extends HTMLInputElement {
     setInputValue: (newValue: string) => void;
     setCursorPos: (pos: number) => void;
     input: HTMLInputElement;
     lastCursorPos: number;
-    value: string;
-}
+};
 
 let ReactInputMaskLib = require("react-input-mask");
+if ("default" in ReactInputMaskLib) {
+    ReactInputMaskLib = ReactInputMaskLib["default"];
+}
 
-export const ReactInputMask: ReactInputMaskInterface =
-    "default" in ReactInputMaskLib
-        ? ReactInputMaskLib["default"]
-        : ReactInputMaskLib;
+export const ReactInputMask:
+    new (props: ReactInputMaskProps) => ReactInputMaskInterface & React.Component<ReactInputMaskProps> = ReactInputMaskLib;

@@ -1,12 +1,18 @@
+import * as React from "react";
 import * as PropTypes from "prop-types";
 import { BaseInputProps, BaseInputPropTypes } from "react-context-form";
+
 import { ReactInputMaskInterface } from "../ReactInputMask/index";
 
-export interface MaskInputProps extends BaseInputProps<HTMLInputElement> {
+export interface MaskInputProps extends React.HTMLProps<HTMLInputElement> {
     mask: string[] | string,
     maskChar?: string,
-    formatChars?: string,
+    formatChars?: {
+        [propName: string]: string;
+    }
     alwaysShowMask?: boolean,
+    // actualy ref is (element: ReactInputMaskInterface) => void
+    ref?: any;  // https://github.com/Microsoft/TypeScript/issues/16019
     maskRef?: (element: ReactInputMaskInterface) => void;
 }
 
@@ -16,8 +22,8 @@ export const MaskInputPropTypes: {[P in keyof MaskInputProps]: PropTypes.Validat
         PropTypes.string.isRequired
     ]),
     maskChar: PropTypes.string,
-    formatChars: PropTypes.string,
+    formatChars: PropTypes.any,
     alwaysShowMask: PropTypes.bool,
-    maskRef: PropTypes.func,
-    ...BaseInputPropTypes
+    ref: PropTypes.func,
+    maskRef: PropTypes.func
 }
