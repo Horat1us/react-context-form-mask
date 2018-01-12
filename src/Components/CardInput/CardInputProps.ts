@@ -4,6 +4,7 @@ import { MaskInputPropTypes, MaskInputProps } from "../MaskInput";
 
 export const CardInputDefaultProps = {
     mask: "999-999-999-999",
+    // tslint:disable-next-line
     maskChar: null
 }
 

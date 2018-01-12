@@ -8,7 +8,7 @@
     "test": "cross-env TS_NODE_PROJECT=tsconfig.json ./node_modules/.bin/nyc --reporter=html mocha -r jsdom-global/register -r ts-node/register -r source-map-support/register tests/unit/bootstrap.ts tests/**/*-specs.tsx tests/**/*-specs.ts",
     "build": "cross-env NODE_ENV=production ./node_modules/.bin/webpack",
     "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "lint": "tslint --project . --fix --exclude ./node_modules/* --exclude ./web/*",
+    "lint": "./node_modules/.bin/tslint --project .",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -50,7 +50,7 @@
     "react-test-renderer": "^15.6.1",
     "sinon": "^3.2.1",
     "ts-node": "^3.3.0",
-    "tslint": "^5.6.0",
+    "tslint": "5.6.0",
     "tslint-react": "^3.2.0"
   },
   "dependencies": {

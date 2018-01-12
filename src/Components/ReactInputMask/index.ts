@@ -20,8 +20,10 @@ export interface ReactInputMaskInterface extends HTMLInputElement {
 let ReactInputMaskLib = require("react-input-mask");
 
 if ("default" in ReactInputMaskLib) {
+    // tslint:disable-next-line
     ReactInputMaskLib = ReactInputMaskLib["default"];
 }
 
 export const ReactInputMask:
-    new (props: ReactInputMaskProps) => ReactInputMaskInterface & React.Component<ReactInputMaskProps> = ReactInputMaskLib;
+    new (props: ReactInputMaskProps) =>
+        ReactInputMaskInterface & React.Component<ReactInputMaskProps> = ReactInputMaskLib;

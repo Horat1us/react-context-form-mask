@@ -55,18 +55,10 @@ export class TimeInput extends React.Component<TimeInputProps> {
     }
 
     protected handleIncrement = (): void => {
-        if (!this.maskInputInstance) {
-            return;
-        }
-
         this.handleChangeControl(this.changeHours(1));
     };
 
     protected handleDecrement = (): void => {
-        if (!this.maskInputInstance) {
-            return;
-        }
-
         this.handleChangeControl(this.changeHours(-1));
     };
 
@@ -111,7 +103,7 @@ export class TimeInput extends React.Component<TimeInputProps> {
         }
     };
 
-    protected changeHours(value: number): React.ChangeEvent<HTMLInputElement> {
+    protected changeHours = (value: number): React.ChangeEvent<HTMLInputElement> => {
         if (!this.maskInputInstance) {
             return;
         }
@@ -134,7 +126,7 @@ export class TimeInput extends React.Component<TimeInputProps> {
         if (!this.maskInputInstance) {
             return;
         }
-        
+
         const value = event.currentTarget.value.replace(/-/g, "0").split(":");
 
         let hoursValue: string | number = Number(value[0]);

@@ -63,6 +63,7 @@ export class MaskInput extends BaseInput<MaskInputProps> {
             mask: this.getCurrentMask(this.childProps.value.toString().length),
             ref: this.setElement,
             onPaste: this.handlePaste,
+            // tslint:disable-next-line
             maskChar: this.childProps.maskChar || null
         };
     }
@@ -82,7 +83,9 @@ export class MaskInput extends BaseInput<MaskInputProps> {
 
     private getCurrentMask(valueLength: number): string {
         return this.maskList
-            ? this.maskList.reduce((prev: string, curr: string) => prev.replace(/\D/g, "").length > valueLength ? prev : curr)
+            ? (this.maskList
+                .reduce((prev: string, curr: string) => prev.replace(/\D/g, "").length > valueLength ? prev : curr)
+            )
             : this.props.mask as string;
     }
 
