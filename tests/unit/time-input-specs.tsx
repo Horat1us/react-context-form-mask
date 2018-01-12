@@ -150,11 +150,22 @@ describe("<TimeInput/>", () => {
     });
 
     it("Should control cursor position on `tab` key press", () => {
+        let cursorControlled = false;
+        (node as any).maskInputInstance.setCursorPos = () => cursorControlled = true;
+        
         wrapper.simulate("keyup", {
             key: "Tab"
         });
 
-        expect((node as any).maskInputInstance.lastCursorPos).to.equal(0);
+        expect(cursorControlled).to.be.true;
+
+        cursorControlled = false;
+
+        wrapper.simulate("keyup", {
+            key: "NotTab"
+        });
+
+        expect(cursorControlled).to.be.false;
     });
 
     it("Should trigger context.handleFocus on focus", () => {

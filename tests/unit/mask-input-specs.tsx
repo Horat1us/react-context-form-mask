@@ -95,9 +95,15 @@ describe("<MaskInput/>", () => {
             get: () => DOMNode
         });
 
-        wrapper.instance().context.value = "Some another value";
+        wrapper.instance().context.value = "Not valid data";
         wrapper.instance().forceUpdate();
 
-        expect(onChangeTriggered).to.be.true;
+        expect(onChangeTriggered).to.be.true;       
+
+        wrapper.instance().context.value = "(000) 0";
+        onChangeTriggered = false;
+        wrapper.instance().forceUpdate();
+        expect(onChangeTriggered).to.be.false;       
+    
     });
 });
