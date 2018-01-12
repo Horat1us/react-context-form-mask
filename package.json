@@ -1,7 +1,7 @@
 {
   "name": "react-context-form-mask",
   "version": "1.0.3",
-  "description": "",
+  "description": "react-input-mask with react-context-form",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "scripts": {
@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/Horat1us/react-context-form-mask/issues"
   },
-  "homepage": "",
+  "homepage": "https://github.com/Horat1us/react-context-form-mask",
   "devDependencies": {
     "@types/chai": "^4.0.3",
     "@types/enzyme": "^2.8.6",
@@ -44,7 +44,7 @@
     "nyc": "^11.1.0",
     "pre-commit": "^1.2.2",
     "react": "^16.2.0",
-    "react-context-form": "^1.8.0",
+    "react-context-form": "^2.0.2",
     "react-dom": "^16.0.0",
     "react-input-mask": "^1.0.7",
     "react-test-renderer": "^15.6.1",
@@ -72,7 +72,7 @@
     "webpack-plugin-critical": "^1.0.0"
   },
   "peerDependencies": {
-    "react-context-form": "^1.8.0",
+    "react-context-form": "^2.0.2",
     "react-input-mask": "^1.0.7"
   },
   "nyc": {
