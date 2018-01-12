@@ -1,17 +1,18 @@
 import * as React from "react";
-import {expect} from "chai";
-import {ReactWrapper, mount} from "enzyme";
-import {MaskInput} from "../../src/Components/MaskInput/MaskInput";
+import { expect } from "chai";
+import { ReactWrapper, mount } from "enzyme";
+
+import { MaskInput } from "../../src/Components/MaskInput";
 
 describe("<MaskInput/>", () => {
     let wrapper: ReactWrapper<any, undefined>;
-    let node: MaskInput;
+    let DOMNode: HTMLInputElement;
 
     const commonHandler = () => undefined;
 
     const simulateChange = (value: string) => {
         wrapper.instance().context.value = value;
-        wrapper.find("input").simulate("input");
+        wrapper.simulate("change");
         wrapper.instance().forceUpdate();
     };
 
@@ -33,9 +34,9 @@ describe("<MaskInput/>", () => {
             value: defaultValue
         };
 
-        wrapper = mount(<MaskInput maskList={maskList}/>, {context});
+        wrapper = mount(<MaskInput mask={maskList} />, { context });
 
-        node = wrapper.instance() as any;
+        DOMNode = wrapper.getDOMNode() as HTMLInputElement;
     });
 
     afterEach(() => {
@@ -44,15 +45,14 @@ describe("<MaskInput/>", () => {
     });
 
     it("Should set mask according to value length", () => {
-        wrapper.find("input").simulate("change");
         simulateChange("0000");
-        expect((wrapper.getDOMNode() as any).value).to.equal("(000) 0");
+        expect(DOMNode.value).to.equal("(000) 0");
 
         simulateChange("0000000000");
-        expect((wrapper.getDOMNode() as any).value).to.equal("(000) 000-00-00");
+        expect(DOMNode.value).to.equal("(000) 000-00-00");
 
         simulateChange("00000000000000");
-        expect((wrapper.getDOMNode() as any).value).to.equal("(000) 000-0000-0000");
+        expect(DOMNode.value).to.equal("(000) 000-0000-0000");
 
         expect(onChangeTriggered).to.be.true;
     });
@@ -92,12 +92,18 @@ describe("<MaskInput/>", () => {
 
     it("Should call context.onChange on ComponentDidUpdate if value was changed", () => {
         Object.defineProperty(document, "activeElement", {
-            get: () =>  node.maskElement.input
+            get: () => DOMNode
         });
 
-        node.maskElement.value = "Some another value";
-        node.forceUpdate();
+        wrapper.instance().context.value = "Not valid data";
+        wrapper.instance().forceUpdate();
 
-        expect(onChangeTriggered).to.be.true;
+        expect(onChangeTriggered).to.be.true;       
+
+        wrapper.instance().context.value = "(000) 0";
+        onChangeTriggered = false;
+        wrapper.instance().forceUpdate();
+        expect(onChangeTriggered).to.be.false;       
+    
     });
 });

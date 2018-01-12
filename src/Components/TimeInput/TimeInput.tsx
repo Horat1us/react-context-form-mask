@@ -1,127 +1,114 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {InputContext, TransformTypes} from "react-context-form";
 
-import {toFixed} from "../../helpers/toFixed";
+import { toFixed } from "../../helpers/toFixed";
 
-import {TimeInputDefaultProps, TimeInputProps, TimeInputPropTypes} from "./TimeInputProps";
-import {BaseInputMaskProps} from "../BaseInputMask/BaseInputMaskProps";
-import {BaseInputMask} from "../BaseInputMask/BaseInputMask";
-import {MaskProps, ReactInputMask} from "../ReactInputMask";
+import { TimeInputProps, TimeInputPropTypes, TimeInputDefaultProps } from "./TimeInputProps"
+import { ReactInputMask, ReactInputMaskInterface } from "../ReactInputMask";
+import { MaskInput, MaskInputProps } from "../MaskInput";
 
-export class TimeInput extends BaseInputMask {
-    public static readonly defaultProps = {
-        ...BaseInputMask.defaultProps,
-        ...TimeInputDefaultProps
-    };
-    public static readonly propTypes = {
-        ...BaseInputMask.propTypes,
-        ...TimeInputPropTypes
-    };
+export class TimeInput extends React.Component<TimeInputProps> {
+    public static readonly propTypes = TimeInputPropTypes;
+    public static readonly defaultProps = TimeInputDefaultProps;
 
-    public props: TimeInputProps & BaseInputMaskProps;
+    protected maskInputInstance: ReactInputMaskInterface;
+    protected currentCursorPosition: number;
 
-    public render(): JSX.Element [] {
+    public render(): JSX.Element {
         const {
-            maskList,
+            showControls,
             onCursorEnd,
             timeFormat,
-            showControls,
-            ...nativeProps
-        } = this.childProps as TimeInputProps & BaseInputMaskProps;
+            ...rest
+        } = this.props;
 
-        const inputProps: {[P in keyof MaskProps]?: MaskProps[P]} = {
-            ...nativeProps,
-            ...this.baseProps,
+        const inputProps: MaskInputProps = {
             onChange: this.handleChangeControl,
+            maskRef: this.setInputConroller,
             onKeyDown: this.handleKeyDown,
             onKeyUp: this.handleKeyUp,
             onInput: this.handleInput,
             onFocus: this.handleFocus,
-            onBlur: () => undefined
-        };
+            alwaysShowMask: true,
+            autoComplete: "off",
+            mask: "99:99",
+            maskChar: "-",
+            type: "tel",
+            ...rest
+        }
 
-        // tslint:disable:jsx-wrap-multiline
-        return [
-            <ReactInputMask {...inputProps} key="input"/>,
-            this.props.showControls && this.Controls
-        ];
+        return (
+            <React.Fragment>
+                <MaskInput {...inputProps} />
+                {this.props.showControls && this.controls}
+            </React.Fragment>
+        );
     }
 
-    protected get Controls(): JSX.Element {
+    protected get controls(): JSX.Element {
         return (
-            <div className="spinner__controls" key="controls">
-                <button type="button" tabIndex={-1} className="btn btn_inc" onClick={this.handleIncrement}/>
-                <button type="button" tabIndex={-1} className="btn btn_dec" onClick={this.handleDecrement}/>
+            <div className="spinner__controls">
+                <button type="button" tabIndex={-1} className="btn btn_inc" onClick={this.handleIncrement} />
+                <button type="button" tabIndex={-1} className="btn btn_dec" onClick={this.handleDecrement} />
             </div>
         );
     }
 
-    protected handleFocus = (): void => {
-        this.maskElement.setCursorPos(0);
-
-        return this.context.onFocus();
+    protected handleIncrement = (): void => {
+        this.handleChangeControl(this.changeHours(1));
     };
+
+    protected handleDecrement = (): void => {
+        this.handleChangeControl(this.changeHours(-1));
+    };
+
+    protected handleFocus = (): void => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
+        this.maskInputInstance.setCursorPos(0);
+    }
+
+    protected setInputConroller = (element: ReactInputMaskInterface): void => {
+        this.maskInputInstance = element;
+    }
 
     protected handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
         this.currentCursorPosition = event.target.selectionStart
     };
 
-    protected handleChangeControl = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        const value = event.currentTarget.value.replace(/-/g, "0").split(":");
-
-        let hoursValue: string | number = Number(value[0]);
-        let minutesValue: string | number = Number(value[1]);
-
-        const {hours, minutes} = this.props.timeFormat;
-
-        minutesValue = minutesValue > minutes ? minutes : toFixed(2, minutesValue);
-        hoursValue = hoursValue > hours ? hours : toFixed(2, hoursValue);
-
-        if (
-            this.currentCursorPosition >= this.childProps.value.toString().length
-            && (typeof this.props.onCursorEnd).toLowerCase() === "function"
-        ) {
-            this.props.onCursorEnd(this.maskElement.input, this.context);
+    protected handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (!this.maskInputInstance) {
+            return;
         }
 
-        return this.context.onChange(`${hoursValue}:${minutesValue}`);
-    };
-
-    protected handleKeyDown = (event: KeyboardEvent): void => {
-        if (event.key === "ArrowDown") {
-            this.maskElement.setCursorPos(this.currentCursorPosition || 0);
-            this.handleDecrement();
-        } else if (event.key === "ArrowUp") {
-            this.maskElement.setCursorPos(this.currentCursorPosition || 0);
-            this.handleIncrement();
+        switch (event.key) {
+            case "ArrowDown":
+                this.maskInputInstance.setCursorPos(this.currentCursorPosition || 0);
+                return this.handleDecrement();
+            case "ArrowUp":
+                this.maskInputInstance.setCursorPos(this.currentCursorPosition || 0);
+                return this.handleIncrement();
         }
     };
 
-    protected handleKeyUp = (event: KeyboardEvent): void => {
+    protected handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
         if (event.key === "Tab") {
-            this.maskElement.setCursorPos(this.currentCursorPosition || 0);
+            this.maskInputInstance.setCursorPos(this.currentCursorPosition || 0);
         }
     };
 
-    protected handleIncrement = (): void => {
-        if (!this.maskElement) {
+    protected changeHours = (value: number): React.ChangeEvent<HTMLInputElement> => {
+        if (!this.maskInputInstance) {
             return;
         }
 
-        this.handleChangeControl(this.changeHours(1));
-    };
-
-    protected handleDecrement = (): void => {
-        if (!this.maskElement) {
-            return;
-        }
-
-        this.handleChangeControl(this.changeHours(-1));
-    };
-
-    protected changeHours(value: number): React.ChangeEvent<HTMLInputElement> {
-        const valuesArray = this.childProps.value.toString().split(":");
+        const valuesArray = this.maskInputInstance.value.toString().split(":");
         let hours = toFixed(2, (Number(valuesArray[0]) + value));
 
         if (Number(hours) < 0) {
@@ -133,5 +120,30 @@ export class TimeInput extends BaseInputMask {
                 value: `${hours}:${valuesArray[1]}`
             }
         } as React.ChangeEvent<HTMLInputElement>;
-    }
+    };
+
+    protected handleChangeControl = (event: React.ChangeEvent<HTMLInputElement>): any => {
+        if (!this.maskInputInstance) {
+            return;
+        }
+
+        const value = event.currentTarget.value.replace(/-/g, "0").split(":");
+
+        let hoursValue: string | number = Number(value[0]);
+        let minutesValue: string | number = Number(value[1]);
+
+        const { hours, minutes } = this.props.timeFormat;
+
+        minutesValue = minutesValue > minutes ? minutes : toFixed(2, minutesValue);
+        hoursValue = hoursValue > hours ? hours : toFixed(2, hoursValue);
+
+        this.maskInputInstance.setInputValue(`${hoursValue}:${minutesValue}`);
+
+        if (
+            this.props.onCursorEnd &&
+            this.currentCursorPosition >= this.maskInputInstance.value.toString().length
+        ) {
+            this.props.onCursorEnd(this.maskInputInstance.input);
+        }
+    };
 }

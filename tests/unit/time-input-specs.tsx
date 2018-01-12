@@ -1,11 +1,15 @@
 import * as React from "react";
-import {expect} from "chai";
-import {ReactWrapper, mount} from "enzyme";
-import {TimeInput} from "../../src/Components/TimeInput/TimeInput";
+import { expect } from "chai";
+import { ReactWrapper, mount } from "enzyme";
+import { InputContextTypes } from "react-context-form";
+
+import { TimeInput } from "../../src/Components/TimeInput";
+import { MaskInput } from "../../src/Components/MaskInput";
 
 describe("<TimeInput/>", () => {
     let wrapper: ReactWrapper<any, any>;
     let node: TimeInput;
+    let DOMNode: HTMLInputElement;
 
     const defaultTime = ["12", "00"];
 
@@ -15,10 +19,8 @@ describe("<TimeInput/>", () => {
     let onFocusTriggered = false;
 
     const onChange = (value) => {
-        onChangeTriggered = true;
-        wrapper.context().value = value;
-        node.forceUpdate();
-        return undefined;
+        wrapper.find(MaskInput).instance().context.value = value;
+        wrapper.instance().forceUpdate();
     };
     const onAttributeChange = commonHandler;
     const onFocus = () => onFocusTriggered = true;
@@ -33,9 +35,10 @@ describe("<TimeInput/>", () => {
     };
 
     beforeEach(() => {
-        wrapper = mount(<TimeInput maskList={["99:99"]} showControls/>, {context});
+        wrapper = mount(<TimeInput showControls />, { context, childContextTypes: InputContextTypes });
 
         node = wrapper.instance() as any;
+        DOMNode = wrapper.getDOMNode() as HTMLInputElement;
     });
 
     afterEach(() => {
@@ -45,72 +48,81 @@ describe("<TimeInput/>", () => {
     });
 
     it("Should set default time on mount", () => {
-        // cov improve
-        wrapper.find("input").simulate("blur");
-        wrapper.find("input").simulate("keyup", {
+        wrapper.simulate("keyup", {
             key: "Tab"
         });
-        expect((wrapper.find("input").getDOMNode() as HTMLInputElement).value).to.equal(defaultTime.join(":"));
+
+        expect(DOMNode.value).to.equal(defaultTime.join(":"));
     });
 
-    it("Should take 1 hour on click button decrement", () => {
+    it("Should decrease 1 hour on click button decrement", () => {
         wrapper.find(".btn_dec").simulate("click");
 
-        const expectedTime = `${Number(defaultTime[0]) - 1}:${defaultTime[1]}`;
-        expect((wrapper.find("input").getDOMNode() as HTMLInputElement).value).to.equal(expectedTime);
+        expect(DOMNode.value).to.equal(`${Number(defaultTime[0]) - 1}:${defaultTime[1]}`);
     });
 
-    it("Should add 1 hour on click button increment", () => {
+    it("Should increase 1 hour on click button increment", () => {
         wrapper.find(".btn_inc").simulate("click");
 
-        const expectedTime = `${Number(defaultTime[0]) + 1}:${defaultTime[1]}`;
-        expect((wrapper.find("input").getDOMNode() as HTMLInputElement).value).to.equal(expectedTime);
+        expect(DOMNode.value).to.equal(`${Number(defaultTime[0]) + 1}:${defaultTime[1]}`);
     });
 
     it("Should set 00:00 when input value is empty", () => {
-        (wrapper.find("input").getDOMNode() as HTMLInputElement).value = "";
-        wrapper.find("input").simulate("change");
+        DOMNode.value = "";
+        wrapper.simulate("change");
 
-        expect(node.context.value).to.equal("00:00");
+        expect(DOMNode.value).to.equal("00:00");
     });
 
-    it("Should not call `context.onChange` when `maskElement` does not exist", async () => {
+    it("Should not call `context.onChange` when on unmount", () => {
         wrapper.unmount();
-        await (node as any).handleDecrement();
-        await (node as any).handleIncrement();
+        (node as any).handleDecrement();
+        (node as any).handleIncrement();
+        (node as any).handleKeyDown();
+        (node as any).handleKeyUp();
+        (node as any).changeHours(1);
+        (node as any).handleChangeControl({} as any);
 
         expect(onChangeTriggered).to.be.false;
     });
 
-    it("Should set `00:00` when hours equal -1 on decrement", () => {
-        (wrapper.find("input").getDOMNode() as HTMLInputElement).value = "";
-        wrapper.find("input").simulate("change");
+    it("Should not call `context.onFocus` when on unmount", () => {
+        wrapper.unmount();
+        (node as any).handleFocus();
 
-        expect(node.context.value).to.equal("00:00");
-
-        wrapper.find(".btn_dec").simulate("click");
-        expect(node.context.value).to.equal("00:00");
+        expect(onFocusTriggered).to.be.false;
     });
 
-    it("Should set 24 hours when hours on input more than 24", () => {
-        (wrapper.find("input").getDOMNode() as HTMLInputElement).value = "25:00";
-        wrapper.find("input").simulate("change");
 
-        expect(node.context.value).to.equal("23:00");
+    it("Should set `00:00` when hours equal -1 on decrement", () => {
+        DOMNode.value = "";
+        wrapper.simulate("change");
+
+        expect(DOMNode.value).to.equal("00:00");
+
+        wrapper.find(".btn_dec").simulate("click");
+        expect(DOMNode.value).to.equal("00:00");
+    });
+
+    it("Should set 23 hours when hours on input more than 24", () => {
+        DOMNode.value = "25:00";
+        wrapper.simulate("change");
+
+        expect(DOMNode.value).to.equal("23:00");
     });
 
     it("Should set 59 minutes when minutes on input more than 59", () => {
-        (wrapper.find("input").getDOMNode() as HTMLInputElement).value = "12:61";
-        wrapper.find("input").simulate("change");
+        DOMNode.value = "12:61";
+        wrapper.simulate("change");
 
-        expect(node.context.value).to.equal("12:59");
+        expect(DOMNode.value).to.equal("12:59");
     });
 
     it("Should call props.onCursorEnd if it pass when cursor on the end of input", async () => {
         wrapper.unmount();
         let triggered = false;
 
-        wrapper = mount(<TimeInput onCursorEnd={() => triggered = true} maskList={["99:99"]} showControls/>, {context});
+        wrapper = mount(<TimeInput onCursorEnd={() => triggered = true} showControls />, { context, childContextTypes: InputContextTypes });
 
         (wrapper.find("input").getDOMNode() as HTMLInputElement).value = "12:59";
         wrapper.find("input").simulate("input", {
@@ -119,26 +131,45 @@ describe("<TimeInput/>", () => {
             }
         });
 
-        wrapper.find("input").simulate("change");
+        wrapper.simulate("change");
         expect(triggered).to.be.true;
     });
 
     it("Should increment/decrement hours on key up/down", () => {
-        wrapper.find("input").simulate("keydown", {
+        wrapper.simulate("keydown", {
             key: "ArrowDown"
         });
 
-        expect(node.context.value).to.equal("11:00");
+        expect(DOMNode.value).to.equal("11:00");
 
-        wrapper.find("input").simulate("keydown", {
+        wrapper.simulate("keydown", {
             key: "ArrowUp"
         });
 
-        expect(node.context.value).to.equal("12:00");
+        expect(DOMNode.value).to.equal("12:00");
+    });
+
+    it("Should control cursor position on `tab` key press", () => {
+        let cursorControlled = false;
+        (node as any).maskInputInstance.setCursorPos = () => cursorControlled = true;
+        
+        wrapper.simulate("keyup", {
+            key: "Tab"
+        });
+
+        expect(cursorControlled).to.be.true;
+
+        cursorControlled = false;
+
+        wrapper.simulate("keyup", {
+            key: "NotTab"
+        });
+
+        expect(cursorControlled).to.be.false;
     });
 
     it("Should trigger context.handleFocus on focus", () => {
-        wrapper.find("input").simulate("focus");
+        wrapper.simulate("focus");
 
         expect(onFocusTriggered).to.be.true;
     });

@@ -8,4 +8,5 @@ tests/output/
 src/**/*.js
 src/**/*.js.map
 .nyc_output
+.vscode
 /build/

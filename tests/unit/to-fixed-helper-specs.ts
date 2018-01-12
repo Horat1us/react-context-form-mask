@@ -1,5 +1,5 @@
-import {expect} from "chai";
-import {toFixed} from "../../src/helpers/toFixed";
+import { expect } from "chai";
+import { toFixed } from "../../src/helpers/toFixed";
 
 describe("toFixed()", () => {
 

@@ -1,13 +1,12 @@
 import * as PropTypes from "prop-types";
 
-import {MaskProps} from "../ReactInputMask/index";
-
-export interface TimeInputProps {
+export interface TimeInputProps extends React.HTMLProps<HTMLInputElement> {
     showControls?: boolean;
     timeFormat?: {
         hours: number,
         minutes: number
-    }
+    },
+    onCursorEnd?: (element: HTMLInputElement) => void
 }
 
 export const TimeInputPropTypes: {[P in keyof TimeInputProps]: PropTypes.Validator<any>} = {
@@ -15,17 +14,14 @@ export const TimeInputPropTypes: {[P in keyof TimeInputProps]: PropTypes.Validat
     timeFormat: PropTypes.shape({
         hours: PropTypes.number.isRequired,
         minutes: PropTypes.number.isRequired
-    })
-};
+    }),
+    onCursorEnd: PropTypes.func
+}
 
-export const TimeInputDefaultProps: {[P in keyof TimeInputProps & MaskProps]?: (TimeInputProps & MaskProps)[P]} = {
-    mask: "99:99",
-    maskChar: "-",
-    alwaysShowMask: true,
-    showControls: false,
+export const TimeInputDefaultProps: {[P in keyof TimeInputProps]: TimeInputProps[P]} = {
+    showControls: true,
     timeFormat: {
         hours: 23,
         minutes: 59
-    },
-    autoComplete: "off"
-};
+    }
+}
