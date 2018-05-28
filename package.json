@@ -1,6 +1,6 @@
 {
   "name": "react-context-form-mask",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "react-input-mask with react-context-form",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
