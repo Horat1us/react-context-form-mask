@@ -1,28 +1,31 @@
 import * as React from "react";
-import * as PropTypes from "prop-types";
-import { InputContextTypes, FormGroupContextTypes, FormGroupContext, InputContext } from "react-context-form";
-
-import { CardInputDefaultProps, CardInputPropTypes } from "./CardInputProps"
+import { FormGroupContext, FormGroupContextValue } from "react-context-form";
 import { MaskInput, MaskInputProps } from "../MaskInput";
+
+export const CardInputDefaultProps = {
+    mask: "9999-9999-9999-9999",
+    // tslint:disable-next-line
+    maskChar: null
+};
 
 export class CardInput extends React.Component<Partial<MaskInputProps>> {
     public static readonly defaultProps = CardInputDefaultProps;
-    public static readonly propTypes = CardInputPropTypes;
-    public static readonly contextTypes = InputContextTypes;
-    public static readonly childContextTypes = FormGroupContextTypes;
+    public static readonly contextType = FormGroupContext;
 
-    public readonly context: InputContext;
-
-    public getChildContext(): FormGroupContext {
-        return {
-            ...this.context,
-            id: `numberCard_${this.context.id}`
-        }
-    }
+    public readonly context: FormGroupContextValue;
 
     public render(): JSX.Element {
         return (
-            <MaskInput {...this.props as MaskInputProps} />
+            <FormGroupContext.Provider value={this.childContextValue}>
+                <MaskInput {...this.props as MaskInputProps} />
+            </FormGroupContext.Provider>
         )
+    }
+
+    public get childContextValue(): FormGroupContextValue {
+        return {
+            ...this.context,
+            id: `numberCard_${this.context.id}`
+        };
     }
 }

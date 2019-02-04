@@ -31,8 +31,7 @@
     "@types/enzyme": "^2.8.6",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.47",
-    "@types/prop-types": "^15.5.2",
-    "@types/react": "^16.0.31",
+    "@types/react": "^16.8.1",
     "@types/sinon": "^2.3.3",
     "awesome-typescript-loader": "^3.2.2",
     "babel-core": "^6.25.0",
@@ -41,12 +40,12 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-regenerator-runtime": "^6.5.0",
-    "circular-dependency-plugin": "^4.2.1",
-    "clean-webpack-plugin": "^0.1.16",
-    "cross-env": "^5.0.5",
     "chai": "^4.1.1",
+    "circular-dependency-plugin": "^4.2.1",
     "class-validator": "^0.7.3",
+    "clean-webpack-plugin": "^0.1.16",
     "codecov": "^2.3.0",
+    "cross-env": "^5.0.5",
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-16": "^1.0.0",
     "jsdom": "11.1.0",
@@ -54,23 +53,23 @@
     "mocha": "^3.5.0",
     "nyc": "^11.1.0",
     "pre-commit": "^1.2.2",
-    "react": "^16.2.0",
-    "react-context-form": "^2.0.2",
+    "react": "^16.7.0",
+    "react-context-form": "^3.0.0-1",
     "react-dom": "^16.0.0",
     "react-input-mask": "^1.0.7",
     "react-test-renderer": "^15.6.1",
     "sinon": "^3.2.1",
     "source-map-loader": "^0.2.1",
-    "typescript": "^2.4.2",
     "ts-node": "^3.3.0",
     "tslint": "5.6.0",
     "tslint-react": "^3.2.0",
+    "typescript": "^3.3.1",
     "webpack": "^3.6.0",
     "webpack-node-externals": "^1.6.0",
     "webpack-plugin-critical": "^1.0.0"
   },
   "peerDependencies": {
-    "react-context-form": "^2.0.2",
+    "react-context-form": "^3.0.0-1",
     "react-input-mask": "^1.0.7"
   },
   "nyc": {
@@ -93,5 +92,6 @@
   "pre-commit": [
     "lint",
     "test"
-  ]
+  ],
+  "dependencies": {}
 }

@@ -1,14 +1,27 @@
 import * as React from "react";
-import * as PropTypes from "prop-types";
-
 import { toFixed } from "../../helpers/toFixed";
 
-import { TimeInputProps, TimeInputPropTypes, TimeInputDefaultProps } from "./TimeInputProps"
 import { ReactInputMask, ReactInputMaskInterface } from "../ReactInputMask";
 import { MaskInput, MaskInputProps } from "../MaskInput";
 
+export interface TimeInputProps extends React.HTMLProps<HTMLInputElement> {
+    showControls?: boolean;
+    timeFormat?: {
+        hours: number,
+        minutes: number
+    },
+    onCursorEnd?: (element: HTMLInputElement) => void
+}
+
+export const TimeInputDefaultProps: {[P in keyof TimeInputProps]: TimeInputProps[P]} = {
+    showControls: true,
+    timeFormat: {
+        hours: 23,
+        minutes: 59
+    }
+};
+
 export class TimeInput extends React.Component<TimeInputProps> {
-    public static readonly propTypes = TimeInputPropTypes;
     public static readonly defaultProps = TimeInputDefaultProps;
 
     protected maskInputInstance: ReactInputMaskInterface;
